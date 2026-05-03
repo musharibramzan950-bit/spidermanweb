@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SPIDER-MAN NEXUS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap');
+:root{--r:#E8192C;--r2:#ff3347;--b:#0057FF;--b2:#003bb5;--cy:#00C8FF;--dk:#050810;--wh:#e8eef8;--sw:280px}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'Exo 2',sans-serif;overflow-x:hidden;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='4' fill='%23E8192C'/%3E%3Cline x1='12' y1='0' x2='12' y2='24' stroke='%230057FF' stroke-width='1'/%3E%3Cline x1='0' y1='12' x2='24' y2='12' stroke='%230057FF' stroke-width='1'/%3E%3C/svg%3E") 12 12,crosshair}
+#bgc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.15}
+.sl{position:fixed;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,87,255,.012) 2px,rgba(0,87,255,.012) 4px)}
+.wt{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);background:var(--r);box-shadow:0 0 10px var(--r)}
+#sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);z-index:2000;background:linear-gradient(180deg,rgba(5,8,20,.98),rgba(0,20,60,.96));border-right:1px solid rgba(0,87,255,.2);transform:translateX(-100%);transition:transform .4s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;overflow:hidden;backdrop-filter:blur(20px)}
+#sb.open{transform:translateX(0)}
+#sb::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,87,255,.025) 40px,rgba(0,87,255,.025) 41px)}
+.sbh{padding:1.4rem;border-bottom:1px solid rgba(0,87,255,.18);position:relative}
+.sblo{font-family:'Orbitron',sans-serif;font-size:1.35rem;font-weight:900;color:var(--r);letter-spacing:4px;text-shadow:0 0 20px rgba(232,25,44,.5);display:block;margin-bottom:.2rem}
+.sbsu{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(0,199,255,.55);letter-spacing:3px}
+.sbcl{position:absolute;top:1rem;right:1rem;background:none;border:1px solid rgba(232,25,44,.3);color:var(--r);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sbcl:hover{background:var(--r);color:#fff}
+.sbn{flex:1;overflow-y:auto;padding:.8rem 0;scrollbar-width:thin;scrollbar-color:rgba(0,87,255,.3) transparent}
+.sbg{font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:4px;color:rgba(0,199,255,.35);text-transform:uppercase;padding:.9rem 1.4rem .3rem}
+.sba{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.4rem;text-decoration:none;color:rgba(232,238,248,.65);font-size:.85rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:all .25s;border-left:3px solid transparent}
+.sba:hover,.sba.ac{color:#fff;background:rgba(0,87,255,.1);border-left-color:var(--r);padding-left:1.8rem}
+.sbi{font-size:1.05rem;flex-shrink:0}
+.sbk{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--cy);background:rgba(0,199,255,.08);border:1px solid rgba(0,199,255,.18);padding:1px 6px;border-radius:3px}
+.sbf{padding:1rem 1.4rem;border-top:1px solid rgba(0,87,255,.15);font-family:'Share Tech Mono',monospace;font-size:.57rem;color:rgba(255,255,255,.18);letter-spacing:2px;line-height:2}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+#ov.show{opacity:1;pointer-events:all}
+#tb{position:fixed;top:0;left:0;right:0;height:56px;z-index:1500;background:rgba(5,8,20,.97);border-bottom:1px solid rgba(0,87,255,.18);display:flex;align-items:center;padding:0 1.4rem;gap:1.2rem;backdrop-filter:blur(20px)}
+.mb{background:none;border:1px solid rgba(0,87,255,.35);color:var(--cy);width:40px;height:36px;border-radius:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .3s}
+.mb span{display:block;width:18px;height:2px;background:var(--cy);border-radius:2px;transition:all .3s}
+.mb:hover{border-color:var(--r);background:rgba(232,25,44,.08)}
+.mb:hover span{background:var(--r)}
+.tbl{font-family:'Orbitron',sans-serif;font-size:1.05rem;font-weight:900;color:var(--r);letter-spacing:3px;text-shadow:0 0 20px rgba(232,25,44,.5);text-decoration:none}
+.tbs{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(0,199,255,.45);letter-spacing:3px;display:none}
+@media(min-width:500px){.tbs{display:block}}
+.tbr{margin-left:auto;display:flex;align-items:center;gap:.8rem}
+.tbd{width:7px;height:7px;border-radius:50%;background:var(--r);animation:blk 1.5s infinite}
+@keyframes blk{0%,100%{opacity:1}50%{opacity:.15}}
+.tbst{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:rgba(0,199,255,.45);letter-spacing:2px}
+#main{padding-top:56px}
+#hero{position:relative;height:100vh;min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,50,160,.18),transparent 70%),radial-gradient(ellipse 60% 40% at 50% 60%,rgba(232,25,44,.1),transparent 60%),var(--dk)}
+.hgr{position:absolute;inset:0;background-image:linear-gradient(rgba(0,87,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,87,255,.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000 30%,transparent 80%)}
+.hc{position:absolute;width:80px;height:80px;border-color:rgba(232,25,44,.35);border-style:solid}
+.hc.tl{top:80px;left:20px;border-width:2px 0 0 2px}.hc.tr{top:80px;right:20px;border-width:2px 2px 0 0}.hc.bl{bottom:80px;left:20px;border-width:0 0 2px 2px}.hc.br{bottom:80px;right:20px;border-width:0 2px 2px 0}
+.ssp{position:absolute;top:0;right:16%;font-size:2.5rem;filter:drop-shadow(0 0 15px rgba(232,25,44,.9));animation:sw 4s ease-in-out infinite;transform-origin:top center;z-index:5}
+.wl{position:absolute;top:0;right:calc(16% + 1.2rem);width:1px;height:200px;background:linear-gradient(180deg,rgba(255,255,255,.5),transparent);transform-origin:top center;animation:swl 4s ease-in-out infinite}
+@keyframes sw{0%{transform:rotate(-28deg)}50%{transform:rotate(28deg)}100%{transform:rotate(-28deg)}}
+@keyframes swl{0%{transform:rotate(-28deg);height:180px}50%{transform:rotate(28deg);height:230px}100%{transform:rotate(-28deg);height:180px}}
+.hey{font-family:'Share Tech Mono',monospace;font-size:.67rem;letter-spacing:6px;color:var(--cy);text-transform:uppercase;margin-bottom:1.2rem;animation:fuA .8s ease forwards;opacity:0}
+.hti{font-family:'Orbitron',sans-serif;font-size:clamp(3.5rem,11vw,9rem);font-weight:900;line-height:.95;text-align:center;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--r) 40%,var(--b) 80%,var(--cy) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 40px rgba(232,25,44,.4));animation:hfl 4s ease-in-out infinite,fuA 1s ease .2s forwards;opacity:0}
+@keyframes hfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes fuA{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+.htg{margin-top:1.2rem;font-family:'Exo 2',sans-serif;font-size:clamp(.85rem,2vw,1.1rem);font-weight:300;letter-spacing:5px;text-transform:uppercase;color:rgba(232,238,248,.6);animation:fuA 1s ease .4s forwards;opacity:0}
+.hcta{margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fuA 1s ease .6s forwards;opacity:0}
+.bp{padding:.8rem 2rem;background:var(--r);color:#fff;border:none;border-radius:4px;font-family:'Orbitron',sans-serif;font-size:.73rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s;box-shadow:0 0 30px rgba(232,25,44,.4)}
+.bp:hover{background:var(--r2);box-shadow:0 0 50px rgba(232,25,44,.7);transform:translateY(-2px)}
+.bo{padding:.8rem 2rem;background:transparent;color:var(--cy);border:1px solid rgba(0,199,255,.4);border-radius:4px;font-family:'Orbitron',sans-serif;font-size:.73rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .3s}
+.bo:hover{border-color:var(--cy);background:rgba(0,199,255,.07);transform:translateY(-2px)}
+.sdn{position:absolute;bottom:2rem;display:flex;flex-direction:column;align-items:center;gap:6px;animation:bnc 2s infinite;font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:4px;color:rgba(255,255,255,.28)}
+@keyframes bnc{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.tkw{overflow:hidden;height:34px;background:rgba(232,25,44,.07);border-top:1px solid rgba(232,25,44,.25);border-bottom:1px solid rgba(232,25,44,.25);display:flex;align-items:center}
+.tkt{display:flex;gap:3rem;white-space:nowrap;animation:tka 30s linear infinite;width:max-content}
+@keyframes tka{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tki{font-family:'Share Tech Mono',monospace;font-size:.67rem;letter-spacing:3px;color:rgba(232,25,44,.75);text-transform:uppercase}
+.tki span{color:rgba(0,199,255,.55);margin:0 .4rem}
+.str{display:flex;flex-wrap:wrap;justify-content:center;border-top:1px solid rgba(0,87,255,.12);border-bottom:1px solid rgba(0,87,255,.12);background:rgba(0,20,60,.25)}
+.sb2{flex:1;min-width:90px;padding:1.8rem 1rem;text-align:center;border-right:1px solid rgba(0,87,255,.12);position:relative;overflow:hidden}
+.sb2:last-child{border-right:none}
+.sb2::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--r),transparent);opacity:0;transition:opacity .3s}
+.sb2:hover::before{opacity:1}
+.sn{font-family:'Orbitron',sans-serif;font-size:1.9rem;font-weight:900;color:var(--r);text-shadow:0 0 20px rgba(232,25,44,.4);display:block;line-height:1}
+.sl2{font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:3px;color:rgba(0,199,255,.45);text-transform:uppercase;margin-top:.35rem;display:block}
+.ps{position:relative;z-index:10;padding:5rem 2rem;max-width:1400px;margin:0 auto}
+.ps.fw{max-width:100%;padding-left:0;padding-right:0}
+.slb{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:5px;color:var(--cy);text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.8rem}
+.slb::before{content:'';display:inline-block;width:20px;height:1px;background:var(--cy)}
+.sti{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:900;letter-spacing:2px;color:#fff;line-height:1.1;margin-bottom:.5rem}
+.sti span{color:var(--r)}
+.sdc{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:rgba(232,238,248,.4);letter-spacing:3px;margin-bottom:3rem}
+.hxd{height:1px;background:linear-gradient(90deg,transparent,rgba(0,87,255,.28),rgba(232,25,44,.25),transparent)}
+.gw{overflow:hidden;position:relative;padding:2.5rem 0;background:linear-gradient(180deg,rgba(0,20,60,.15),rgba(5,8,20,.5))}
+.gw::before,.gw::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:5;pointer-events:none}
+.gw::before{left:0;background:linear-gradient(90deg,var(--dk),transparent)}
+.gw::after{right:0;background:linear-gradient(270deg,var(--dk),transparent)}
+.st{display:flex;gap:.8rem;animation:sF 35s linear infinite;width:max-content}
+.st:hover{animation-play-state:paused}
+.str2{display:flex;gap:.8rem;margin-top:.8rem;animation:sR 40s linear infinite;width:max-content}
+.str2:hover{animation-play-state:paused}
+@keyframes sF{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes sR{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.mi{flex:0 0 200px;height:260px;border-radius:6px;overflow:hidden;border:1px solid rgba(0,87,255,.18);transition:transform .35s,box-shadow .35s,border-color .35s;position:relative;cursor:pointer;background:#050810}
+.mi:hover{transform:scale(1.08) translateY(-8px);border-color:var(--r);box-shadow:0 20px 50px rgba(232,25,44,.5),0 0 30px rgba(0,87,255,.18);z-index:10}
+.mi img{width:100%;height:100%;object-fit:cover;transition:filter .35s,transform .35s}
+.mi:hover img{filter:brightness(1.15) saturate(1.3);transform:scale(1.05)}
+.mi .zo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;opacity:0;transition:opacity .3s;background:rgba(232,25,44,.2);backdrop-filter:blur(4px)}
+.mi:hover .zo{opacity:1}
+#lb{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;backdrop-filter:blur(18px)}
+#lb.open{display:flex}
+#lbin{position:relative;display:flex;align-items:center;justify-content:center}
+#lbim{max-width:90vw;max-height:85vh;border-radius:8px;border:1px solid rgba(232,25,44,.4);box-shadow:0 0 60px rgba(232,25,44,.3),0 0 120px rgba(0,87,255,.15);display:block}
+#lbvd{width:min(900px,90vw);border-radius:8px;border:1px solid rgba(232,25,44,.4);box-shadow:0 0 60px rgba(232,25,44,.3)}
+.lbc{position:absolute;width:28px;height:28px;border-color:var(--r);border-style:solid;animation:cp 2s infinite;z-index:2}
+.lbc.tl{top:-8px;left:-8px;border-width:2px 0 0 2px}.lbc.tr{top:-8px;right:-8px;border-width:2px 2px 0 0}.lbc.bl{bottom:-8px;left:-8px;border-width:0 0 2px 2px}.lbc.br{bottom:-8px;right:-8px;border-width:0 2px 2px 0}
+@keyframes cp{0%,100%{opacity:1}50%{opacity:.25}}
+.lbr{position:fixed;top:50%;left:50%;border-radius:50%;border:1px solid rgba(232,25,44,.25);pointer-events:none;animation:lbg 2s ease-out infinite}
+.lbr:nth-child(2){animation-delay:.65s}.lbr:nth-child(3){animation-delay:1.3s}
+@keyframes lbg{0%{width:0;height:0;opacity:.7;transform:translate(-50%,-50%)}100%{width:500px;height:500px;opacity:0;transform:translate(-50%,-50%)}}
+#lbcl{position:fixed;top:1.2rem;right:1.2rem;width:44px;height:44px;border-radius:6px;background:rgba(232,25,44,.12);border:1px solid rgba(232,25,44,.4);color:var(--r);font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:9010}
+#lbcl:hover{background:var(--r);color:#fff}
+#lbpv,#lbnx{position:fixed;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:6px;background:rgba(5,8,20,.85);border:1px solid rgba(0,87,255,.28);color:var(--cy);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:9010}
+#lbpv{left:1rem}#lbnx{right:1rem}
+#lbpv:hover,#lbnx:hover{border-color:var(--b);background:rgba(0,87,255,.12)}
+#lbcp{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:.67rem;letter-spacing:3px;color:rgba(0,199,255,.55);white-space:nowrap;z-index:9010}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1.2rem;margin-top:2rem}
+.hxc{background:rgba(5,12,28,.8);border:1px solid rgba(0,87,255,.16);border-radius:6px;padding:1.5rem;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;backdrop-filter:blur(8px)}
+.hxc::before{content:'';position:absolute;top:0;left:0;width:3px;bottom:0;background:linear-gradient(180deg,var(--r),var(--b))}
+.hxc:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,87,255,.18);border-color:rgba(0,87,255,.38)}
+.hxc h3{font-family:'Orbitron',sans-serif;font-size:.88rem;font-weight:700;color:var(--r);letter-spacing:2px;margin-bottom:.8rem;text-transform:uppercase}
+.hxc p{font-size:.87rem;line-height:1.75;color:rgba(232,238,248,.68)}
+.ctg{display:inline-block;margin-bottom:.5rem;font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:2px;color:var(--cy);background:rgba(0,199,255,.07);border:1px solid rgba(0,199,255,.14);padding:2px 8px;border-radius:2px}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:1rem;margin-top:2rem}
+.phx{background:rgba(0,87,255,.04);border:1px solid rgba(0,87,255,.13);border-radius:6px;padding:1.3rem;transition:all .3s}
+.phx:hover{border-color:rgba(232,25,44,.38);background:rgba(232,25,44,.04);transform:translateY(-4px)}
+.phi{font-size:1.75rem;margin-bottom:.6rem}
+.phx h3{font-family:'Orbitron',sans-serif;font-size:.76rem;font-weight:700;color:var(--r);letter-spacing:2px;margin-bottom:.5rem;text-transform:uppercase}
+.phx p{font-size:.82rem;line-height:1.7;color:rgba(232,238,248,.62)}
+.vg{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1rem;margin-top:2rem}
+.vhx{background:rgba(10,0,5,.6);border:1px solid rgba(139,0,20,.22);border-radius:6px;padding:1.2rem;position:relative;overflow:hidden;transition:all .3s}
+.vhx::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,25,44,.35),transparent)}
+.vhx:hover{border-color:rgba(232,25,44,.38);transform:translateY(-4px);box-shadow:0 10px 30px rgba(232,25,44,.12)}
+.vhx h3{font-family:'Orbitron',sans-serif;font-size:.86rem;font-weight:700;color:var(--r2);letter-spacing:2px;margin-bottom:.3rem;text-transform:uppercase}
+.vf{font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:2px;color:rgba(0,199,255,.38);margin-bottom:.5rem}
+.vhx p{font-size:.82rem;line-height:1.7;color:rgba(232,238,248,.62)}
+.era{font-family:'Orbitron',sans-serif;font-size:.76rem;font-weight:700;color:var(--cy);letter-spacing:4px;text-transform:uppercase;margin:3rem 0 1rem;display:flex;align-items:center;gap:1rem}
+.era::after{content:'';flex:1;height:1px;background:rgba(0,199,255,.13)}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:1rem}
+.fhx{background:rgba(5,12,28,.7);border:1px solid rgba(0,87,255,.13);border-radius:6px;padding:1.2rem;transition:all .3s}
+.fhx:hover{border-color:rgba(0,87,255,.38);transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,87,255,.12)}
+.fhx.up{border-color:rgba(232,25,44,.28);background:rgba(232,25,44,.04)}
+.fy{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;color:var(--cy);margin-bottom:.3rem}
+.fhx.up .fy{color:var(--r)}
+.fhx h3{font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:.3rem}
+.fa{font-size:.77rem;color:rgba(232,238,248,.38);margin-bottom:.6rem}
+.fp{font-size:.78rem;line-height:1.65;color:rgba(232,238,248,.58);margin-bottom:.8rem}
+.fls{display:flex;gap:.4rem;flex-wrap:wrap}
+.fl{display:inline-block;padding:3px 10px;background:rgba(0,87,255,.09);border:1px solid rgba(0,87,255,.22);color:var(--cy);text-decoration:none;border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:1px;transition:all .2s}
+.fl:hover{background:var(--b2);color:#fff;border-color:var(--b)}
+.vidg{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:1.2rem;margin-top:2rem}
+.vidh{border-radius:6px;overflow:hidden;border:1px solid rgba(0,87,255,.18);background:#050810;transition:all .3s;cursor:pointer;position:relative}
+.vidh:hover{border-color:var(--r);box-shadow:0 0 40px rgba(232,25,44,.22);transform:scale(1.02)}
+.vidh video{width:100%;display:block;max-height:220px;object-fit:cover;pointer-events:none}
+.vl{padding:.8rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;color:rgba(0,199,255,.55);background:rgba(0,0,0,.5);text-transform:uppercase}
+.vov{position:absolute;top:0;left:0;right:0;bottom:44px;display:flex;align-items:center;justify-content:center;background:rgba(232,25,44,.12);opacity:0;transition:opacity .3s;font-size:3rem}
+.vidh:hover .vov{opacity:1}
+.tl{position:relative;padding-left:2.5rem;margin-top:2rem}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--r),rgba(0,87,255,.25),transparent)}
+.tli{position:relative;margin-bottom:1.5rem;padding:1.2rem 1.3rem;background:rgba(5,12,28,.6);border:1px solid rgba(0,87,255,.1);border-radius:6px;transition:all .3s}
+.tli::before{content:'';position:absolute;left:-2.6rem;top:1.3rem;width:8px;height:8px;border-radius:50%;background:var(--r);box-shadow:0 0 10px rgba(232,25,44,.55)}
+.tli:hover{border-color:rgba(0,87,255,.28);background:rgba(0,20,60,.38)}
+.tli h4 a{font-family:'Orbitron',sans-serif;font-size:.77rem;font-weight:700;color:var(--r);letter-spacing:2px;text-decoration:none;text-transform:uppercase}
+.tli h4 a:hover{color:var(--r2)}
+.tli p{font-size:.82rem;line-height:1.7;color:rgba(232,238,248,.58);margin-top:.4rem}
+.lg{margin-bottom:2.5rem}
+.lgt{font-family:'Orbitron',sans-serif;font-size:.76rem;font-weight:700;color:var(--cy);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.lgt::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--r);flex-shrink:0}
+.lps{display:flex;flex-wrap:wrap;gap:.5rem}
+.lp{display:inline-block;padding:5px 13px;background:rgba(5,12,28,.8);border:1px solid rgba(0,87,255,.18);color:rgba(232,238,248,.65);text-decoration:none;border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:1px;transition:all .22s}
+.lp:hover{background:rgba(0,87,255,.13);color:#fff;border-color:var(--b);transform:translateY(-2px)}
+#contact{position:relative;padding:7rem 2rem;overflow:hidden;background:linear-gradient(180deg,var(--dk),rgba(0,20,60,.25) 50%,var(--dk))}
+.cw{max-width:900px;margin:0 auto;position:relative;z-index:5}
+.cc{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1rem;margin-top:3rem}
+.ccd{background:rgba(5,12,28,.8);border:1px solid rgba(0,87,255,.16);border-radius:8px;padding:1.8rem 1rem;text-decoration:none;color:var(--wh);display:flex;flex-direction:column;align-items:center;gap:.7rem;transition:all .3s;text-align:center;position:relative;overflow:hidden}
+.ccd::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--b),var(--r));transform:scaleX(0);transition:transform .3s}
+.ccd:hover::before{transform:scaleX(1)}
+.ccd:hover{border-color:rgba(0,87,255,.38);transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,87,255,.18)}
+.ci{font-size:2rem}.cl{font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:3px;color:rgba(0,199,255,.45);text-transform:uppercase}
+.cv{font-size:.77rem;color:var(--cy);word-break:break-all}
+.cf{margin-top:3rem;padding:2rem;background:rgba(5,12,28,.7);border:1px solid rgba(0,87,255,.16);border-radius:8px}
+.cft{font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;color:var(--r);letter-spacing:3px;text-transform:uppercase;margin-bottom:1.5rem}
+.cfg{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:480px){.cfg{grid-template-columns:1fr}}
+.fi{background:rgba(0,87,255,.05);border:1px solid rgba(0,87,255,.18);color:#fff;padding:.75rem 1rem;border-radius:4px;font-family:'Exo 2',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;width:100%}
+.fi:focus{border-color:var(--b)}.fita{grid-column:1/-1}textarea.fi{resize:vertical;min-height:100px}
+.fbt{grid-column:1/-1;padding:.85rem 2rem;background:var(--r);color:#fff;border:none;border-radius:4px;font-family:'Orbitron',sans-serif;font-size:.73rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .3s;box-shadow:0 0 20px rgba(232,25,44,.28)}
+.fbt:hover{background:var(--r2);box-shadow:0 0 40px rgba(232,25,44,.55)}
+footer{text-align:center;padding:2.5rem 2rem;background:rgba(5,8,20,.97);border-top:1px solid rgba(0,87,255,.13)}
+.ftl{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;color:var(--r);letter-spacing:4px;text-shadow:0 0 20px rgba(232,25,44,.5)}
+.fts{font-family:'Share Tech Mono',monospace;font-size:.57rem;letter-spacing:4px;color:rgba(0,199,255,.28);margin-top:.5rem}
+.wb{position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);animation:wbO .55s ease-out forwards}
+@keyframes wbO{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(2.5);opacity:0}}
+.wp{position:fixed;pointer-events:none;z-index:9997;font-size:.9rem;animation:wpF .9s ease-out forwards}
+@keyframes wpF{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+.rev{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.rev.vis{opacity:1;transform:translateY(0)}
+@media(max-width:768px){:root{--sw:260px}.cg,.vg,.fg,.cc,.vidg{grid-template-columns:1fr}.ps{padding:4rem 1rem}}
+</style>
+</head>
+<body>
+<canvas id="bgc"></canvas>
+<div class="sl"></div>
+<div id="ov" onclick="cSB()"></div>
+<aside id="sb">
+<div class="sbh"><span class="sblo">SPIDER-MAN</span><span class="sbsu">// NEXUS v2.0 //</span><button class="sbcl" onclick="cSB()">&#10005;</button></div>
+<nav class="sbn">
+<div class="sbg">// Navigation</div>
+<a href="#hero" class="sba" onclick="cSB()"><span class="sbi">&#127968;</span> Home</a>
+<a href="#gallery" class="sba" onclick="cSB()"><span class="sbi">&#128248;</span> Gallery <span class="sbk">32</span></a>
+<a href="#origins" class="sba" onclick="cSB()"><span class="sbi">&#129516;</span> Origins</a>
+<a href="#powers" class="sba" onclick="cSB()"><span class="sbi">&#9889;</span> Powers</a>
+<a href="#villains" class="sba" onclick="cSB()"><span class="sbi">&#128128;</span> Villains <span class="sbk">10</span></a>
+<div class="sbg">// Films &amp; Media</div>
+<a href="#films" class="sba" onclick="cSB()"><span class="sbi">&#127916;</span> All Films <span class="sbk">9+</span></a>
+<a href="#videos" class="sba" onclick="cSB()"><span class="sbi">&#127902;</span> Videos <span class="sbk">4</span></a>
+<div class="sbg">// Data</div>
+<a href="#arcs" class="sba" onclick="cSB()"><span class="sbi">&#128218;</span> Story Arcs</a>
+<a href="#links" class="sba" onclick="cSB()"><span class="sbi">&#128279;</span> All Links</a>
+<div class="sbg">// Connect</div>
+<a href="#contact" class="sba" onclick="cSB()"><span class="sbi">&#128225;</span> Contact</a>
+<a href="mailto:musharibramzan950@gmail.com" class="sba"><span class="sbi">&#128231;</span> Gmail</a>
+<a href="https://www.linkedin.com/in/musharib-ramzan-6609a739b" target="_blank" class="sba"><span class="sbi">&#128188;</span> LinkedIn</a>
+<a href="https://linktr.ee/Musharib_" target="_blank" class="sba"><span class="sbi">&#127807;</span> Linktree</a>
+<a href="https://github.com/musharibramzan950-bit" target="_blank" class="sba"><span class="sbi">&#128049;</span> GitHub</a>
+</nav>
+<div class="sbf">SPIDER-MAN NEXUS<br>BUILT BY MUSHARIB RAMZAN<br>MARVEL &copy; STAN LEE &middot; S.DITKO &middot; 1962</div>
+</aside>
+<header id="tb">
+<button class="mb" onclick="tSB()"><span></span><span></span><span></span></button>
+<a href="#hero" class="tbl">SPIDER-MAN</a>
+<span style="color:rgba(0,87,255,.3)">&middot;</span>
+<span class="tbs">NEXUS</span>
+<div class="tbr"><div class="tbd"></div><span class="tbst">LIVE</span></div>
+</header>
+<div id="main">
+<section id="hero">
+<div class="hgr"></div>
+<div class="hc tl"></div><div class="hc tr"></div><div class="hc bl"></div><div class="hc br"></div>
+<div class="wl"></div><div class="ssp">&#128375;</div>
+<div class="hey">// MARVEL COMICS &middot; EST. 1962 //</div>
+<h1 class="hti">SPIDER-MAN</h1>
+<p class="htg">With Great Power Comes Great Responsibility</p>
+<div class="hcta"><a href="#gallery" class="bp">View Gallery</a><a href="#films" class="bo">All Films</a></div>
+<div class="sdn"><span>SCROLL</span><span>&#8595;</span></div>
+</section>
+<div class="tkw"><div class="tkt">
+<span class="tki">SPIDER-MAN<span>//</span>1962</span><span class="tki">WITH GREAT POWER<span>//</span>GREAT RESPONSIBILITY</span><span class="tki">TOBEY<span>//</span>ANDREW<span>//</span>TOM</span><span class="tki">NO WAY HOME<span>//</span>$1.9B</span><span class="tki">INTO THE SPIDER-VERSE<span>//</span>OSCAR WINNER</span><span class="tki">BRAND NEW DAY<span>//</span>2026</span><span class="tki">STAN LEE<span>//</span>STEVE DITKO<span>//</span>LEGEND</span>
+<span class="tki">SPIDER-MAN<span>//</span>1962</span><span class="tki">WITH GREAT POWER<span>//</span>GREAT RESPONSIBILITY</span><span class="tki">TOBEY<span>//</span>ANDREW<span>//</span>TOM</span><span class="tki">NO WAY HOME<span>//</span>$1.9B</span><span class="tki">INTO THE SPIDER-VERSE<span>//</span>OSCAR WINNER</span><span class="tki">BRAND NEW DAY<span>//</span>2026</span><span class="tki">STAN LEE<span>//</span>STEVE DITKO<span>//</span>LEGEND</span>
+</div></div>
+<div class="str rev">
+<div class="sb2"><span class="sn">1962</span><span class="sl2">Created</span></div>
+<div class="sb2"><span class="sn">60+</span><span class="sl2">Years Active</span></div>
+<div class="sb2"><span class="sn">9</span><span class="sl2">Major Films</span></div>
+<div class="sb2"><span class="sn">3</span><span class="sl2">Spider-Men</span></div>
+<div class="sb2"><span class="sn">30K+</span><span class="sl2">Comic Issues</span></div>
+<div class="sb2"><span class="sn">#1</span><span class="sl2">Most Iconic</span></div>
+</div>
+<div id="gallery" class="ps fw" style="padding-top:5rem;padding-bottom:2rem">
+<div style="padding:0 2rem 2rem;max-width:1400px;margin:0 auto">
+<div class="slb rev">Image Archive</div>
+<h2 class="sti rev">PHOTO <span>GRID</span></h2>
+<p class="sdc rev">// CLICK ANY IMAGE OR VIDEO TO OPEN FULLSCREEN &middot; ARROWS TO NAVIGATE //</p>
+</div></div>
+<div class="gw">
+<div class="st"><div class="mi" onclick="oLB('assets/images/Spider_Man.jpg','Spider-Man',0)"><img src="assets/images/Spider_Man.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spider-Man_wallpaper__1_.jpg','Spider-Man Wallpaper',1)"><img src="assets/images/Spider-Man_wallpaper__1_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spider-man_Wallpaper.jpg','Spider-Man',2)"><img src="assets/images/Spider-man_Wallpaper.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spiderman_edits.jpg','Spider-Man Edits',3)"><img src="assets/images/Spiderman_edits.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Amazing_Spider-Man_2__Spidey_saves_Gwen_Stacy.jpg','TASM2 Gwen',4)"><img src="assets/images/The_Amazing_Spider-Man_2__Spidey_saves_Gwen_Stacy.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Amazing_Spider_Man___Vs_Electro.jpg','vs Electro',5)"><img src="assets/images/The_Amazing_Spider_Man___Vs_Electro.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Ultimate_Spidermans__.jpg','Ultimate Spider-Men',6)"><img src="assets/images/The_Ultimate_Spidermans__.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__7_.jpg','Spider-Man',7)"><img src="assets/images/download__7_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__8_.jpg','Spider-Man',8)"><img src="assets/images/download__8_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__9_.jpg','Spider-Man',9)"><img src="assets/images/download__9_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__10_.jpg','Spider-Man',10)"><img src="assets/images/download__10_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__11_.jpg','Spider-Man',11)"><img src="assets/images/download__11_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__12_.jpg','Spider-Man',12)"><img src="assets/images/download__12_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__13_.jpg','Spider-Man',13)"><img src="assets/images/download__13_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__14_.jpg','Spider-Man',14)"><img src="assets/images/download__14_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__15_.jpg','Spider-Man',15)"><img src="assets/images/download__15_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spider_Man.jpg','Spider-Man',0)"><img src="assets/images/Spider_Man.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spider-Man_wallpaper__1_.jpg','Spider-Man Wallpaper',1)"><img src="assets/images/Spider-Man_wallpaper__1_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spider-man_Wallpaper.jpg','Spider-Man',2)"><img src="assets/images/Spider-man_Wallpaper.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Spiderman_edits.jpg','Spider-Man Edits',3)"><img src="assets/images/Spiderman_edits.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Amazing_Spider-Man_2__Spidey_saves_Gwen_Stacy.jpg','TASM2 Gwen',4)"><img src="assets/images/The_Amazing_Spider-Man_2__Spidey_saves_Gwen_Stacy.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Amazing_Spider_Man___Vs_Electro.jpg','vs Electro',5)"><img src="assets/images/The_Amazing_Spider_Man___Vs_Electro.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/The_Ultimate_Spidermans__.jpg','Ultimate Spider-Men',6)"><img src="assets/images/The_Ultimate_Spidermans__.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__7_.jpg','Spider-Man',7)"><img src="assets/images/download__7_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__8_.jpg','Spider-Man',8)"><img src="assets/images/download__8_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__9_.jpg','Spider-Man',9)"><img src="assets/images/download__9_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__10_.jpg','Spider-Man',10)"><img src="assets/images/download__10_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__11_.jpg','Spider-Man',11)"><img src="assets/images/download__11_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__12_.jpg','Spider-Man',12)"><img src="assets/images/download__12_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__13_.jpg','Spider-Man',13)"><img src="assets/images/download__13_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__14_.jpg','Spider-Man',14)"><img src="assets/images/download__14_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__15_.jpg','Spider-Man',15)"><img src="assets/images/download__15_.jpg" loading="lazy"><div class="zo">&#128269;</div></div></div>
+<div class="str2"><div class="mi" onclick="oLB('assets/images/download__16_.jpg','Spider-Man',16)"><img src="assets/images/download__16_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__17_.jpg','Spider-Man',17)"><img src="assets/images/download__17_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__18_.jpg','Spider-Man',18)"><img src="assets/images/download__18_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__19_.jpg','Spider-Man',19)"><img src="assets/images/download__19_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__20_.jpg','Spider-Man',20)"><img src="assets/images/download__20_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__21_.jpg','Spider-Man',21)"><img src="assets/images/download__21_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__22_.jpg','Spider-Man',22)"><img src="assets/images/download__22_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__23_.jpg','Spider-Man',23)"><img src="assets/images/download__23_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__24_.jpg','Spider-Man',24)"><img src="assets/images/download__24_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Classic_Wallpaper_____Classisco123__on_X.jpg','Classic',25)"><img src="assets/images/Classic_Wallpaper_____Classisco123__on_X.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Super_Cool_Wallpapers_for_iPhone.jpg','Super Cool',26)"><img src="assets/images/Super_Cool_Wallpapers_for_iPhone.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/2160x3840_Spiderman_2002_Sony_Xperia_X_xz_z5_Premium_Hd_4k_Wallpapers__38.jpg','2002 4K',27)"><img src="assets/images/2160x3840_Spiderman_2002_Sony_Xperia_X_xz_z5_Premium_Hd_4k_Wallpapers__38.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/homem_aranha.jpg','Homem Aranha',28)"><img src="assets/images/homem_aranha.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Espinoza_.jpg','Spider-Man',29)"><img src="assets/images/Espinoza_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/_Ne.jpg','Spider-Man',30)"><img src="assets/images/_Ne.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__16_.jpg','Spider-Man',16)"><img src="assets/images/download__16_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__17_.jpg','Spider-Man',17)"><img src="assets/images/download__17_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__18_.jpg','Spider-Man',18)"><img src="assets/images/download__18_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__19_.jpg','Spider-Man',19)"><img src="assets/images/download__19_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__20_.jpg','Spider-Man',20)"><img src="assets/images/download__20_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__21_.jpg','Spider-Man',21)"><img src="assets/images/download__21_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__22_.jpg','Spider-Man',22)"><img src="assets/images/download__22_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__23_.jpg','Spider-Man',23)"><img src="assets/images/download__23_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/download__24_.jpg','Spider-Man',24)"><img src="assets/images/download__24_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Classic_Wallpaper_____Classisco123__on_X.jpg','Classic',25)"><img src="assets/images/Classic_Wallpaper_____Classisco123__on_X.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Super_Cool_Wallpapers_for_iPhone.jpg','Super Cool',26)"><img src="assets/images/Super_Cool_Wallpapers_for_iPhone.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/2160x3840_Spiderman_2002_Sony_Xperia_X_xz_z5_Premium_Hd_4k_Wallpapers__38.jpg','2002 4K',27)"><img src="assets/images/2160x3840_Spiderman_2002_Sony_Xperia_X_xz_z5_Premium_Hd_4k_Wallpapers__38.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/homem_aranha.jpg','Homem Aranha',28)"><img src="assets/images/homem_aranha.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/Espinoza_.jpg','Spider-Man',29)"><img src="assets/images/Espinoza_.jpg" loading="lazy"><div class="zo">&#128269;</div></div><div class="mi" onclick="oLB('assets/images/_Ne.jpg','Spider-Man',30)"><img src="assets/images/_Ne.jpg" loading="lazy"><div class="zo">&#128269;</div></div></div>
+</div>
+<div class="hxd"></div>
+<section class="ps" id="origins">
+<div class="slb rev">Origin Protocol</div><h2 class="sti rev">ORIGINS &amp; <span>CREATION</span></h2><p class="sdc rev">// AMAZING FANTASY #15 &middot; AUGUST 1962 //</p>
+<div class="cg">
+<div class="hxc rev"><span class="ctg">COMICS</span><h3>Amazing Fantasy #15</h3><p>Created by Stan Lee and Steve Ditko. Marvel's editor said "people hate spiders nobody will buy this." He was wrong. Spider-Man got his own ongoing series in March 1963.</p></div>
+<div class="hxc rev"><span class="ctg">CONCEPT</span><h3>Stan Lee's Vision</h3><p>A teenage superhero who wasn't a sidekick. Peter Parker lived in Queens with Aunt May, worrying about rent and bullies. No mansion, no billions. Genuinely relatable. Radical in 1962.</p></div>
+<div class="hxc rev"><span class="ctg">DESIGN</span><h3>Steve Ditko's Art</h3><p>Ditko designed the iconic red-and-blue costume and web pattern. He created Spider-Man's visual language and co-created Doc Ock, Vulture, Electro, Mysterio, and Sandman.</p></div>
+<div class="hxc rev"><span class="ctg">CHARACTER</span><h3>Peter Parker</h3><p>Orphaned young, raised in Forest Hills, Queens. Science prodigy and photographer for the Daily Bugle. Bitten by a radioactive spider on a school field trip. One of the most fleshed-out civilian identities in comics.</p></div>
+<div class="hxc rev"><span class="ctg">CORE</span><h3>Core Principles</h3><p>Relatable everyday problems. Guilt as permanent motivation. Intelligence as a superpower. Humor as coping. No mentor, no team. Alone and figuring it out. These principles made Spider-Man immortal.</p></div>
+<div class="hxc rev"><span class="ctg">LEGACY</span><h3>Cultural Impact</h3><p>30,000+ comic issues. 9 major films. Dozens of animated series. Countless video games. Recognizable in virtually every country on Earth. The most relatable superhero ever created.</p></div>
+</div></section>
+<div class="hxd"></div>
+<section class="ps" id="powers">
+<div class="slb rev">Ability Database</div><h2 class="sti rev">POWERS &amp; <span>ABILITIES</span></h2><p class="sdc rev">// SPIDER-BITE AUGMENTED PHYSIOLOGY //</p>
+<div class="pg">
+<div class="phx rev"><div class="phi">&#128170;</div><h3>Superhuman Strength</h3><p>Can lift 10-25 tons. Stopped a runaway car one-handed. Held up a collapsing building (ASM #33). Trades blows with Rhino, Venom, and cosmic-level threats.</p></div>
+<div class="phx rev"><div class="phi">&#129521;</div><h3>Wall-Crawling</h3><p>Clings to any surface via inter-molecular attraction. Not suction, not hooks. Works on wet glass, ceilings, and smooth metal.</p></div>
+<div class="phx rev"><div class="phi">&#128308;</div><h3>Spider-Sense</h3><p>Precognitive danger warning. Directional, works while sleeping. Responds to INTENT. Venom famously does not trigger it.</p></div>
+<div class="phx rev"><div class="phi">&#9889;</div><h3>Superhuman Agility</h3><p>Can dodge bullets already fired. Changes direction mid-air. Combat maneuvers physically impossible for normal humans.</p></div>
+<div class="phx rev"><div class="phi">&#128376;</div><h3>Web-Shooters</h3><p>Self-invented mechanical devices. Tensile-strength webbing for swinging, binding, and shields. Webs dissolve in ~1 hour.</p></div>
+<div class="phx rev"><div class="phi">&#129504;</div><h3>Genius Intellect</h3><p>IQ 250+. Expert in biology, chemistry, physics, engineering. Created web-shooters as a teenager. His mind is as much a superpower as his spider-bite.</p></div>
+<div class="phx rev"><div class="phi">&#128295;</div><h3>Spider-Tracer</h3><p>Self-designed tracking devices tuned to his spider-sense. Tracks enemies without line-of-sight.</p></div>
+<div class="phx rev"><div class="phi">&#128138;</div><h3>Accelerated Healing</h3><p>Heals far faster than normal humans. Recovers in hours from injuries that would take weeks. Has survived hits from Hulk-level threats.</p></div>
+</div></section>
+<div class="hxd"></div>
+<section class="ps" id="villains">
+<div class="slb rev">Threat Registry</div><h2 class="sti rev">ROGUES <span>GALLERY</span></h2><p class="sdc rev">// THE GREATEST VILLAIN ROSTER IN COMICS //</p>
+<div class="vg">
+<div class="vhx rev"><h3>Green Goblin</h3><div class="vf">Norman Osborn &middot; ASM #14 (1964)</div><p>The greatest Spider-Man villain. Discovered Spidey's identity through his own intelligence. Murdered Gwen Stacy and changed comics forever.</p></div>
+<div class="vhx rev"><h3>Doctor Octopus</h3><div class="vf">Otto Octavius &middot; ASM #3 (1963)</div><p>Four mechanical arms fused to his CNS. 24-ft reach, 8 tons each. Swapped minds with Peter and became the Superior Spider-Man for a full year.</p></div>
+<div class="vhx rev"><h3>Venom</h3><div class="vf">Eddie Brock + Symbiote &middot; ASM #300 (1988)</div><p>Alien symbiote bonded with Eddie Brock. Does not trigger spider-sense. Has all of Peter's powers plus alien biology. "We are Venom."</p></div>
+<div class="vhx rev"><h3>Carnage</h3><div class="vf">Cletus Kasady &middot; ASM #361 (1992)</div><p>Symbiote offspring bonded to serial killer Cletus Kasady. More powerful than Venom with zero moral restraint. Spider-Man's most terrifying villain.</p></div>
+<div class="vhx rev"><h3>Electro</h3><div class="vf">Max Dillon &middot; ASM #9 (1964)</div><p>Living electrical battery. Generates and controls electricity. One of Steve Ditko's originals. Featured heavily in The Amazing Spider-Man 2.</p></div>
+<div class="vhx rev"><h3>Kraven the Hunter</h3><div class="vf">Sergei Kravinoff &middot; ASM #15 (1964)</div><p>"Kraven's Last Hunt" (1987) is widely considered the greatest Spider-Man story ever written. He drugs Spidey, buries him alive, wears the costume.</p></div>
+<div class="vhx rev"><h3>The Vulture</h3><div class="vf">Adrian Toomes &middot; ASM #2 (1963)</div><p>Elderly aeronautical engineer with electromagnetic flight harness. One of Spider-Man's oldest enemies. Brilliantly portrayed by Michael Keaton in Homecoming.</p></div>
+<div class="vhx rev"><h3>Sandman</h3><div class="vf">Flint Marko &middot; ASM #4 (1963)</div><p>Can transform his body into sand, nearly impossible to physically harm. Steve Ditko original. Featured in Spider-Man 3.</p></div>
+<div class="vhx rev"><h3>The Lizard</h3><div class="vf">Dr. Curt Connors &middot; ASM #6 (1963)</div><p>Most tragic villain. Peter's mentor who transforms into a primal reptilian creature with no memory of being Connors.</p></div>
+<div class="vhx rev"><h3>Mysterio</h3><div class="vf">Quentin Beck &middot; ASM #13 (1964)</div><p>Master illusionist and special effects expert. Brilliantly played by Jake Gyllenhaal in Spider-Man: Far From Home.</p></div>
+</div></section>
+<div class="hxd"></div>
+<section class="ps" id="films">
+<div class="slb rev">Film Archive</div><h2 class="sti rev">ALL <span>FILMS</span></h2><p class="sdc rev">// EVERY SPIDER-MAN &middot; EVERY ERA &middot; EVERY UNIVERSE //</p>
+<div class="era rev">SAM RAIMI TRILOGY &mdash; 2002&ndash;2007</div>
+<div class="fg">
+<div class="fhx rev"><div class="fy">// 2002</div><h3>Spider-Man</h3><div class="fa">Tobey Maguire &middot; Willem Dafoe &middot; Kirsten Dunst</div><div class="fp">Launched the modern superhero era. $821.7M worldwide. The upside-down kiss. Green Goblin. "With great power..."</div><div class="fls"><a href="https://www.imdb.com/title/tt0145487/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spiderman" target="_blank" class="fl">RT 89%</a></div></div>
+<div class="fhx rev"><div class="fy">// 2004</div><h3>Spider-Man 2</h3><div class="fa">Tobey Maguire &middot; Alfred Molina &middot; Kirsten Dunst</div><div class="fp">Often called the greatest superhero film ever made. $789M. Doctor Octopus. The train sequence.</div><div class="fls"><a href="https://www.imdb.com/title/tt0316654/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_2" target="_blank" class="fl">RT 93%</a></div></div>
+<div class="fhx rev"><div class="fy">// 2007</div><h3>Spider-Man 3</h3><div class="fa">Tobey Maguire &middot; Topher Grace &middot; Thomas H. Church</div><div class="fp">Highest-grossing Raimi film at $894.9M. Sandman, Venom, and the infamous emo dance scene.</div><div class="fls"><a href="https://www.imdb.com/title/tt0413300/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_3" target="_blank" class="fl">RT</a></div></div>
+</div>
+<div class="era rev">AMAZING SPIDER-MAN &mdash; 2012&ndash;2014</div>
+<div class="fg">
+<div class="fhx rev"><div class="fy">// 2012</div><h3>The Amazing Spider-Man</h3><div class="fa">Andrew Garfield &middot; Emma Stone &middot; Rhys Ifans</div><div class="fp">Reboot with mechanical web-shooters and Gwen Stacy romance. The Lizard as villain. $757M worldwide.</div><div class="fls"><a href="https://www.imdb.com/title/tt0948470/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/the_amazing_spider-man" target="_blank" class="fl">RT</a></div></div>
+<div class="fhx rev"><div class="fy">// 2014</div><h3>The Amazing Spider-Man 2</h3><div class="fa">Andrew Garfield &middot; Emma Stone &middot; Jamie Foxx</div><div class="fp">Electro as main villain. The death of Gwen Stacy. Cinema's most shocking superhero moment. $708M.</div><div class="fls"><a href="https://www.imdb.com/title/tt2304141/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/the_amazing_spider-man_2" target="_blank" class="fl">RT</a></div></div>
+</div>
+<div class="era rev">MCU SPIDER-MAN &mdash; 2017&ndash;PRESENT</div>
+<div class="fg">
+<div class="fhx rev"><div class="fy">// 2017</div><h3>Spider-Man: Homecoming</h3><div class="fa">Tom Holland &middot; Michael Keaton &middot; Marisa Tomei</div><div class="fp">MCU solo debut. The Vulture. Tony Stark as mentor. High-school Spider-Man done right. $880M.</div><div class="fls"><a href="https://www.imdb.com/title/tt2250912/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_homecoming" target="_blank" class="fl">RT 92%</a></div></div>
+<div class="fhx rev"><div class="fy">// 2019</div><h3>Spider-Man: Far From Home</h3><div class="fa">Tom Holland &middot; Jake Gyllenhaal &middot; Zendaya</div><div class="fp">Post-Endgame. Mysterio. $1.13 BILLION worldwide. Peter's identity revealed at the end.</div><div class="fls"><a href="https://www.imdb.com/title/tt6320628/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider_man_far_from_home" target="_blank" class="fl">RT 90%</a></div></div>
+<div class="fhx rev"><div class="fy">// 2021</div><h3>Spider-Man: No Way Home</h3><div class="fa">Tom Holland &middot; Tobey Maguire &middot; Andrew Garfield</div><div class="fp">THE EVENT. All three Spider-Men together. $1.9 BILLION. The death of Aunt May. Audiences cried worldwide.</div><div class="fls"><a href="https://www.imdb.com/title/tt10872600/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_no_way_home" target="_blank" class="fl">RT 93%</a></div></div>
+<div class="fhx up rev"><div class="fy">// 2026 &middot; UPCOMING</div><h3>Spider-Man: Brand New Day</h3><div class="fa">Tom Holland &middot; MCU</div><div class="fp">Post-No Way Home. Nobody remembers Peter Parker. A true Brand New Day. Most anticipated MCU film of 2026.</div><div class="fls"><a href="https://www.imdb.com/title/tt22084616/" target="_blank" class="fl">IMDb</a><a href="https://www.marvel.com/movies/spider-man-brand-new-day" target="_blank" class="fl">Marvel</a><a href="https://en.wikipedia.org/wiki/Spider-Man:_Brand_New_Day" target="_blank" class="fl">Wiki</a></div></div>
+</div>
+<div class="era rev">SPIDER-VERSE ANIMATED</div>
+<div class="fg">
+<div class="fhx rev"><div class="fy">// 2018</div><h3>Into the Spider-Verse</h3><div class="fa">Miles Morales &middot; Shameik Moore (voice)</div><div class="fp">Academy Award Winner. Revolutionized animation. Miles Morales's origin. "Anyone can wear the mask." RT 97%.</div><div class="fls"><a href="https://www.imdb.com/title/tt4633694/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider_man_into_the_spider_verse" target="_blank" class="fl">RT 97%</a></div></div>
+<div class="fhx rev"><div class="fy">// 2023</div><h3>Across the Spider-Verse</h3><div class="fa">Miles Morales &middot; Spider-Man 2099</div><div class="fp">95 Spider-People. 6 animation styles. Canon events. Ended on a cliffhanger. RT 95%.</div><div class="fls"><a href="https://www.imdb.com/title/tt9362722/" target="_blank" class="fl">IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_across_the_spider-verse" target="_blank" class="fl">RT 95%</a></div></div>
+<div class="fhx up rev"><div class="fy">// UPCOMING</div><h3>Beyond the Spider-Verse</h3><div class="fa">Miles Morales &mdash; The Finale</div><div class="fp">The conclusion to the Miles trilogy. Most anticipated animated film.</div><div class="fls"><a href="https://www.imdb.com/title/tt16360004/" target="_blank" class="fl">IMDb</a></div></div>
+</div>
+</section>
+<div class="hxd"></div>
+<section class="ps" id="videos">
+<div class="slb rev">Video Vault</div><h2 class="sti rev">VIDEO <span>ARCHIVE</span></h2><p class="sdc rev">// CLICK TO OPEN FULLSCREEN WITH ALL SPIDER-EFFECTS //</p>
+<div class="vidg"><div class="vidh" onclick="oVid('assets/videos/spiderman_epic_edit.mp4','Spider-Man Epic Edit')"><video preload="metadata" muted loop><source src="assets/videos/spiderman_epic_edit.mp4" type="video/mp4"></video><div class="vov">&#9654;</div><div class="vl">// Spider-Man Epic Edit</div></div><div class="vidh" onclick="oVid('assets/videos/From_KlickPin_CF_Pin_on_Movies_TV_Shows.mp4','Movies and TV Shows')"><video preload="metadata" muted loop><source src="assets/videos/From_KlickPin_CF_Pin_on_Movies_TV_Shows.mp4" type="video/mp4"></video><div class="vov">&#9654;</div><div class="vl">// Movies and TV Shows</div></div><div class="vidh" onclick="oVid('assets/videos/From_KlickPin_CF_Spider-Man_swingin_Around_in_NYC_____Video____Marvel_characters_Amazing_spiderman_movie_Spiderman_-_Pin-6262886973516012.mp4','Swinging Through NYC')"><video preload="metadata" muted loop><source src="assets/videos/From_KlickPin_CF_Spider-Man_swingin_Around_in_NYC_____Video____Marvel_characters_Amazing_spiderman_movie_Spiderman_-_Pin-6262886973516012.mp4" type="video/mp4"></video><div class="vov">&#9654;</div><div class="vl">// Swinging Through NYC</div></div><div class="vidh" onclick="oVid('assets/videos/From_KlickPin_CF_Pin_by_Rolando_Montalvo_Uyardo_on_carpeta_elegante__Video____Amazing_spiderman_Marvel_art_Spider-man_wallpaper.mp4','Amazing Spider-Man Art Reel')"><video preload="metadata" muted loop><source src="assets/videos/From_KlickPin_CF_Pin_by_Rolando_Montalvo_Uyardo_on_carpeta_elegante__Video____Amazing_spiderman_Marvel_art_Spider-man_wallpaper.mp4" type="video/mp4"></video><div class="vov">&#9654;</div><div class="vl">// Amazing Spider-Man Art Reel</div></div></div>
+</section>
+<div class="hxd"></div>
+<section class="ps" id="arcs">
+<div class="slb rev">Story Database</div><h2 class="sti rev">LEGENDARY <span>ARCS</span></h2><p class="sdc rev">// THE COMICS THAT DEFINED A LEGEND //</p>
+<div class="tl">
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/The_Night_Gwen_Stacy_Died" target="_blank">The Night Gwen Stacy Died &mdash; 1973</a></h4><p>ASM #121-122. Green Goblin throws Gwen off the George Washington Bridge. Spider-Man's web catches her but the whiplash breaks her neck. The end of the Silver Age of comics.</p></div>
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/Kraven%27s_Last_Hunt" target="_blank">Kraven's Last Hunt &mdash; 1987</a></h4><p>Kraven drugs Spider-Man, buries him alive, puts on the costume, and proves he is a better Spider-Man. Widely considered the greatest Spider-Man arc ever written.</p></div>
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/Maximum_Carnage" target="_blank">Maximum Carnage &mdash; 1993</a></h4><p>Carnage assembles a team of villains to unleash chaos on NYC. Spider-Man and Venom must team up. A 14-part crossover.</p></div>
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/Clone_Saga" target="_blank">The Clone Saga &mdash; 1994&ndash;1996</a></h4><p>Spider-Man discovers he may be a clone. Ben Reilly (the Scarlet Spider) might be the real Peter Parker. One of the longest storylines in Marvel history.</p></div>
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/One_More_Day_(comics)" target="_blank">One More Day &mdash; 2007</a></h4><p>Aunt May is shot and dying. Peter makes a deal with Mephisto and trades his marriage to Mary Jane to save her. One of the most controversial stories ever.</p></div>
+<div class="tli rev"><h4><a href="https://www.marvel.com/comics/series/16370/superior_spider-man_2013_-_2014" target="_blank">Superior Spider-Man &mdash; 2013&ndash;2014</a></h4><p>Doctor Octopus swaps minds with Peter, lets Peter die, and becomes Spider-Man. A full year exploring what Peter's powers look like filtered through a villain.</p></div>
+<div class="tli rev"><h4><a href="https://en.wikipedia.org/wiki/Spider-Verse_(comics)" target="_blank">Spider-Verse &mdash; 2014&ndash;2015</a></h4><p>Every Spider-Man from every universe hunted by the Inheritors. The first time every Spider-Man appeared together. Inspired the animated film trilogy.</p></div>
+</div></section>
+<div class="hxd"></div>
+<section class="ps" id="links">
+<div class="slb rev">External Database</div><h2 class="sti rev">ALL <span>LINKS</span></h2><p class="sdc rev">// EVERY SPIDER-MAN RESOURCE EVER //</p>
+<div class="lg rev"><div class="lgt">Official and Comics</div><div class="lps"><a href="https://www.marvel.com/characters/spider-man-peter-parker" target="_blank" class="lp">Marvel Official</a><a href="https://www.marvel.com/unlimited" target="_blank" class="lp">Marvel Unlimited</a><a href="https://www.marvel.com/comics/issue/16926/amazing_fantasy_1962_15" target="_blank" class="lp">Amazing Fantasy 15</a><a href="https://en.wikipedia.org/wiki/List_of_Spider-Man_titles" target="_blank" class="lp">All SM Comics</a><a href="https://en.wikipedia.org/wiki/Spider-Man" target="_blank" class="lp">Wikipedia</a></div></div>
+<div class="lg rev"><div class="lgt">Sam Raimi Trilogy</div><div class="lps"><a href="https://www.imdb.com/title/tt0145487/" target="_blank" class="lp">SM 2002 IMDb</a><a href="https://www.rottentomatoes.com/m/spiderman" target="_blank" class="lp">SM 2002 RT</a><a href="https://www.imdb.com/title/tt0316654/" target="_blank" class="lp">SM 2 IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_2" target="_blank" class="lp">SM 2 RT</a><a href="https://www.imdb.com/title/tt0413300/" target="_blank" class="lp">SM 3 IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_3" target="_blank" class="lp">SM 3 RT</a></div></div>
+<div class="lg rev"><div class="lgt">Amazing Spider-Man</div><div class="lps"><a href="https://www.imdb.com/title/tt0948470/" target="_blank" class="lp">TASM 2012 IMDb</a><a href="https://www.rottentomatoes.com/m/the_amazing_spider-man" target="_blank" class="lp">TASM RT</a><a href="https://www.imdb.com/title/tt2304141/" target="_blank" class="lp">TASM 2 IMDb</a><a href="https://www.rottentomatoes.com/m/the_amazing_spider-man_2" target="_blank" class="lp">TASM 2 RT</a></div></div>
+<div class="lg rev"><div class="lgt">MCU Films</div><div class="lps"><a href="https://www.imdb.com/title/tt2250912/" target="_blank" class="lp">Homecoming IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_homecoming" target="_blank" class="lp">Homecoming RT</a><a href="https://www.imdb.com/title/tt6320628/" target="_blank" class="lp">Far From Home IMDb</a><a href="https://www.rottentomatoes.com/m/spider_man_far_from_home" target="_blank" class="lp">Far From Home RT</a><a href="https://www.imdb.com/title/tt10872600/" target="_blank" class="lp">No Way Home IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_no_way_home" target="_blank" class="lp">No Way Home RT</a><a href="https://www.imdb.com/title/tt22084616/" target="_blank" class="lp">Brand New Day IMDb</a><a href="https://www.marvel.com/movies/spider-man-brand-new-day" target="_blank" class="lp">Brand New Day Marvel</a></div></div>
+<div class="lg rev"><div class="lgt">Spider-Verse Films</div><div class="lps"><a href="https://www.imdb.com/title/tt4633694/" target="_blank" class="lp">Into the Spider-Verse IMDb</a><a href="https://www.rottentomatoes.com/m/spider_man_into_the_spider_verse" target="_blank" class="lp">Into RT 97%</a><a href="https://www.imdb.com/title/tt9362722/" target="_blank" class="lp">Across IMDb</a><a href="https://www.rottentomatoes.com/m/spider-man_across_the_spider-verse" target="_blank" class="lp">Across RT 95%</a><a href="https://www.imdb.com/title/tt16360004/" target="_blank" class="lp">Beyond IMDb</a></div></div>
+<div class="lg rev"><div class="lgt">Video Games</div><div class="lps"><a href="https://www.playstation.com/en-us/games/marvels-spider-man-2/" target="_blank" class="lp">Spider-Man 2 PS5</a><a href="https://www.playstation.com/en-us/games/marvels-spider-man-miles-morales/" target="_blank" class="lp">Miles Morales PS5</a><a href="https://www.playstation.com/en-us/games/marvels-spider-man-remastered/" target="_blank" class="lp">Remastered PS5/PC</a><a href="https://store.steampowered.com/app/2119490/Marvels_Spider-Man_2/" target="_blank" class="lp">SM 2 Steam</a></div></div>
+<div class="lg rev"><div class="lgt">Animated Series</div><div class="lps"><a href="https://www.disneyplus.com/series/spider-man/4zoBnqPeFH3y" target="_blank" class="lp">1994 Series Disney+</a><a href="https://www.imdb.com/title/tt0397306/" target="_blank" class="lp">Spectacular SM</a><a href="https://www.disneyplus.com/series/ultimate-spider-man/4bdZEJz3sMdz" target="_blank" class="lp">Ultimate Spider-Man</a><a href="https://en.wikipedia.org/wiki/Spider-Noir_(TV_series)" target="_blank" class="lp">Spider-Noir 2026</a></div></div>
+<div class="lg rev"><div class="lgt">Characters</div><div class="lps"><a href="https://en.wikipedia.org/wiki/Miles_Morales" target="_blank" class="lp">Miles Morales</a><a href="https://en.wikipedia.org/wiki/Spider-Gwen" target="_blank" class="lp">Spider-Gwen</a><a href="https://en.wikipedia.org/wiki/Spider-Man_2099" target="_blank" class="lp">Spider-Man 2099</a><a href="https://en.wikipedia.org/wiki/Green_Goblin" target="_blank" class="lp">Green Goblin</a><a href="https://en.wikipedia.org/wiki/Venom_(character)" target="_blank" class="lp">Venom</a><a href="https://en.wikipedia.org/wiki/Carnage_(character)" target="_blank" class="lp">Carnage</a><a href="https://en.wikipedia.org/wiki/Mary_Jane_Watson" target="_blank" class="lp">Mary Jane Watson</a><a href="https://en.wikipedia.org/wiki/Sinister_Six" target="_blank" class="lp">Sinister Six</a></div></div>
+<div class="lg rev"><div class="lgt">Wikis</div><div class="lps"><a href="https://marvel.fandom.com/wiki/Peter_Parker_(Earth-616)" target="_blank" class="lp">Marvel Wiki Fandom</a><a href="https://marvelcinematicuniverse.fandom.com/wiki/Spider-Man" target="_blank" class="lp">MCU Wiki</a><a href="https://spiderman.fandom.com/wiki/Spider-Man_Wiki" target="_blank" class="lp">Spider-Man Wiki</a><a href="https://www.comicvine.gamespot.com/spider-man/4005-1443/" target="_blank" class="lp">Comic Vine</a><a href="https://en.wikipedia.org/wiki/Sony%27s_Spider-Man_Universe" target="_blank" class="lp">Sony SM Universe</a></div></div>
+</section>
+<div class="hxd"></div>
+<div id="contact">
+<div class="cw">
+<div class="slb rev" style="justify-content:center">Comms Channel</div>
+<h2 class="sti rev" style="text-align:center">CONTACT <span>MUSHARIB</span></h2>
+<p class="sdc rev" style="text-align:center">// BUILT BY YOUR FRIENDLY NEIGHBORHOOD DEVELOPER //</p>
+<div class="cc">
+<a href="mailto:musharibramzan950@gmail.com" class="ccd rev"><div class="ci">&#128231;</div><div class="cl">Gmail</div><div class="cv">musharibramzan950@gmail.com</div></a>
+<a href="https://www.linkedin.com/in/musharib-ramzan-6609a739b" target="_blank" class="ccd rev"><div class="ci">&#128188;</div><div class="cl">LinkedIn</div><div class="cv">musharib-ramzan-6609a739b</div></a>
+<a href="https://linktr.ee/Musharib_" target="_blank" class="ccd rev"><div class="ci">&#127807;</div><div class="cl">Linktree</div><div class="cv">linktr.ee/Musharib_</div></a>
+<a href="https://github.com/musharibramzan950-bit" target="_blank" class="ccd rev"><div class="ci">&#128049;</div><div class="cl">GitHub</div><div class="cv">musharibramzan950-bit</div></a>
+</div>
+<div class="cf rev">
+<div class="cft">// Send a Message</div>
+<div class="cfg">
+<input type="text" class="fi" placeholder="Your Name">
+<input type="email" class="fi" placeholder="Your Email">
+<textarea class="fi fita" placeholder="Your Message..." rows="4"></textarea>
+<button class="fbt" onclick="hForm(this)">TRANSMIT MESSAGE &#8250;</button>
+</div></div></div></div>
+<footer><div class="ftl">SPIDER-MAN</div><div class="fts">// NEXUS &middot; BUILT BY MUSHARIB RAMZAN &middot; MARVEL &copy; STAN LEE &middot; STEVE DITKO &middot; 1962 //</div></footer>
+</div>
+<div id="lb">
+<div class="lbr"></div><div class="lbr"></div><div class="lbr"></div>
+<div id="lbin"><div class="lbc tl"></div><div class="lbc tr"></div><div class="lbc bl"></div><div class="lbc br"></div>
+<img id="lbim" src="" alt="" style="display:none">
+<video id="lbvd" controls style="display:none"><source id="lbvs" src="" type="video/mp4"></video>
+</div>
+<button id="lbcl" onclick="cLB()">&#10005;</button>
+<button id="lbpv" onclick="lbN(-1)">&#8249;</button>
+<button id="lbnx" onclick="lbN(1)">&#8250;</button>
+<div id="lbcp"></div>
+</div>
+<script>
+var allI=['assets/images/Spider_Man.jpg','assets/images/Spider-Man_wallpaper__1_.jpg','assets/images/Spider-man_Wallpaper.jpg','assets/images/Spiderman_edits.jpg','assets/images/The_Amazing_Spider-Man_2__Spidey_saves_Gwen_Stacy.jpg','assets/images/The_Amazing_Spider_Man___Vs_Electro.jpg','assets/images/The_Ultimate_Spidermans__.jpg','assets/images/download__7_.jpg','assets/images/download__8_.jpg','assets/images/download__9_.jpg','assets/images/download__10_.jpg','assets/images/download__11_.jpg','assets/images/download__12_.jpg','assets/images/download__13_.jpg','assets/images/download__14_.jpg','assets/images/download__15_.jpg','assets/images/download__16_.jpg','assets/images/download__17_.jpg','assets/images/download__18_.jpg','assets/images/download__19_.jpg','assets/images/download__20_.jpg','assets/images/download__21_.jpg','assets/images/download__22_.jpg','assets/images/download__23_.jpg','assets/images/download__24_.jpg','assets/images/Classic_Wallpaper_____Classisco123__on_X.jpg','assets/images/Super_Cool_Wallpapers_for_iPhone.jpg','assets/images/2160x3840_Spiderman_2002_Sony_Xperia_X_xz_z5_Premium_Hd_4k_Wallpapers__38.jpg','assets/images/homem_aranha.jpg','assets/images/Espinoza_.jpg','assets/images/_Ne.jpg'];
+var lbI=0;
+function tSB(){var s=document.getElementById('sb'),o=document.getElementById('ov');s.classList.toggle('open');o.classList.toggle('show');document.body.style.overflow=s.classList.contains('open')?'hidden':'';}
+function cSB(){document.getElementById('sb').classList.remove('open');document.getElementById('ov').classList.remove('show');document.body.style.overflow='';}
+var bc=document.getElementById('bgc'),bx=bc.getContext('2d');
+function dBG(){bc.width=window.innerWidth;bc.height=window.innerHeight;var cx=bc.width/2,cy=bc.height/2,mr=Math.hypot(cx,cy)*1.1;bx.clearRect(0,0,bc.width,bc.height);bx.strokeStyle='rgba(0,87,255,.45)';bx.lineWidth=.5;for(var r=80;r<mr;r+=90){bx.beginPath();bx.arc(cx,cy,r,0,Math.PI*2);bx.stroke();}bx.strokeStyle='rgba(0,87,255,.25)';bx.lineWidth=.4;for(var a=0;a<360;a+=20){var rd=a*Math.PI/180;bx.beginPath();bx.moveTo(cx,cy);bx.lineTo(cx+Math.cos(rd)*mr,cy+Math.sin(rd)*mr);bx.stroke();}}
+dBG();window.addEventListener('resize',dBG);
+var tr=[];for(var i=0;i<10;i++){var d=document.createElement('div');d.className='wt';d.style.cssText='width:'+(7-i*.5)+'px;height:'+(7-i*.5)+'px;opacity:'+(0.9-i*.08)+';';document.body.appendChild(d);tr.push({el:d,x:0,y:0});}
+var mx=0,my=0;document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+function tTick(){tr[0].x=mx;tr[0].y=my;tr[0].el.style.left=mx+'px';tr[0].el.style.top=my+'px';for(var i=1;i<tr.length;i++){tr[i].x+=(tr[i-1].x-tr[i].x)*.35;tr[i].y+=(tr[i-1].y-tr[i].y)*.35;tr[i].el.style.left=tr[i].x+'px';tr[i].el.style.top=tr[i].y+'px';}requestAnimationFrame(tTick);}tTick();
+document.addEventListener('click',function(e){var b=document.createElement('div');b.className='wb';b.style.left=e.clientX+'px';b.style.top=e.clientY+'px';b.innerHTML='<svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="35" fill="none" stroke="rgba(232,25,44,.7)" stroke-width="1"/><circle cx="40" cy="40" r="22" fill="none" stroke="rgba(0,87,255,.5)" stroke-width="1"/><circle cx="40" cy="40" r="10" fill="none" stroke="rgba(0,199,255,.4)" stroke-width="1"/></svg>';document.body.appendChild(b);setTimeout(function(){b.remove();},550);for(var i=0;i<5;i++){var p=document.createElement('div');p.className='wp';p.innerHTML=['&#128375;','&#9889;','&#128376;','&#10022;'][Math.floor(Math.random()*4)];p.style.left=e.clientX+'px';p.style.top=e.clientY+'px';var ang=Math.random()*Math.PI*2,dist=40+Math.random()*70;p.style.setProperty('--dx',Math.cos(ang)*dist+'px');p.style.setProperty('--dy',Math.sin(ang)*dist+'px');document.body.appendChild(p);setTimeout(function(){p.remove();},900);}});
+function spF(){var s=document.createElement('div');s.style.cssText='position:fixed;left:'+Math.random()*100+'vw;top:110vh;pointer-events:none;z-index:1;font-size:'+(1+Math.random()*1.5)+'rem;opacity:.18;';s.innerHTML=Math.random()>.5?'&#128375;':'&#128376;';document.body.appendChild(s);var y=window.innerHeight+50,rot=0,sp=.8+Math.random()*1.5;var iv=setInterval(function(){y-=sp;rot+=1;s.style.top=y+'px';s.style.transform='rotate('+rot+'deg)';if(y<-50){clearInterval(iv);s.remove();}},20);setTimeout(function(){if(s.parentNode){clearInterval(iv);s.remove();}},18000);}
+setInterval(spF,3500);spF();spF();
+var rE=document.querySelectorAll('.rev');var rO=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1});rE.forEach(function(el){rO.observe(el);});
+var wl2=document.querySelector('.wl'),t2=0;setInterval(function(){t2+=.04;if(wl2)wl2.style.height=(185+Math.sin(t2)*65)+'px';},40);
+window.addEventListener('scroll',function(){var h=document.getElementById('hero');if(h)h.style.transform='translateY('+window.scrollY*.3+'px)';var sc=['gallery','origins','powers','villains','films','videos','arcs','links','contact'];var cu='hero';sc.forEach(function(id){var el=document.getElementById(id);if(el&&window.scrollY>el.offsetTop-200)cu=id;});document.querySelectorAll('.sba').forEach(function(a){a.classList.toggle('ac',a.getAttribute('href')==='#'+cu);});});
+document.querySelectorAll('.vidh video').forEach(function(v){v.parentElement.addEventListener('mouseenter',function(){v.play().catch(function(){});});v.parentElement.addEventListener('mouseleave',function(){v.pause();v.currentTime=0;});});
+function oLB(src,cap,idx){lbI=idx;document.getElementById('lbim').style.display='block';document.getElementById('lbim').src=src;document.getElementById('lbvd').style.display='none';try{document.getElementById('lbvd').pause();}catch(e){}document.getElementById('lbcp').textContent='// '+cap.toUpperCase()+' // IMAGE '+(idx+1)+' OF '+allI.length;document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';}
+function oVid(src,cap){document.getElementById('lbim').style.display='none';document.getElementById('lbvs').src=src;document.getElementById('lbvd').load();document.getElementById('lbvd').style.display='block';document.getElementById('lbcp').textContent='// '+cap.toUpperCase()+' //';document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';}
+function cLB(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='';try{document.getElementById('lbvd').pause();}catch(e){}}
+function lbN(d){lbI=(lbI+d+allI.length)%allI.length;document.getElementById('lbim').src=allI[lbI];document.getElementById('lbim').style.display='block';document.getElementById('lbvd').style.display='none';document.getElementById('lbcp').textContent='// IMAGE '+(lbI+1)+' OF '+allI.length+' //';}
+document.getElementById('lb').addEventListener('click',function(e){if(e.target===this)cLB();});
+document.addEventListener('keydown',function(e){if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')cLB();if(e.key==='ArrowRight')lbN(1);if(e.key==='ArrowLeft')lbN(-1);});
+function hForm(btn){var inputs=btn.closest('.cfg').querySelectorAll('input,textarea');var ok=true;inputs.forEach(function(i){if(!i.value.trim())ok=false;});if(!ok){btn.textContent='FILL ALL FIELDS';setTimeout(function(){btn.textContent='TRANSMIT MESSAGE ›';},2000);return;}btn.textContent='✓ TRANSMITTED';btn.style.background='#0a6b0a';inputs.forEach(function(i){i.value='';});setTimeout(function(){btn.textContent='TRANSMIT MESSAGE ›';btn.style.background='';},3000);}
+</script>
+</body>
+</html>
